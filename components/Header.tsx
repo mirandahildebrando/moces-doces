@@ -65,8 +65,8 @@ export default function Header() {
             <Image
               src="/img/logo-moces-header.png"
               alt=""
-              width={327}
-              height={180}
+              width={387}
+              height={186}
               loading="eager"
               fetchPriority="low"
               className={`${styles.brandLogo} ${styles.brandLogoDark}`}
@@ -74,8 +74,8 @@ export default function Header() {
             <Image
               src="/img/logo-moces-header-light.png"
               alt=""
-              width={327}
-              height={180}
+              width={387}
+              height={186}
               preload
               aria-hidden
               className={`${styles.brandLogo} ${styles.brandLogoLight}`}

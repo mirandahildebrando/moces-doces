@@ -1,31 +1,40 @@
 # ============================================================
 # make-logo.ps1 — Prepara a logo da Moces Doces para o header
 # ============================================================
-# A logo original (logo-moces.jpg) tem fundo creme sólido — o que
-# criaria um "retângulo" branco sobre o vídeo do hero. Este script:
+# A logo original (logo-moces.jpg) tem fundo creme sólido e um
+# lockup completo (brigadeiro + linhas + "Moces" + "DOCINHOS
+# ARTESANAIS"). Em tamanho de navbar, a linha miúda fica ilegível.
+# Este script:
 #
 #   1. Detecta automaticamente o lockup central (pixels escuros);
-#   2. Recorta com margem mínima (os enfeites rosas dos cantos ficam fora);
-#   3. Remove o fundo creme criando alfa por distância de cor (anti-aliasing suave);
-#   4. Gera DUAS versões transparentes em PNG:
+#   2. Corta a base do lockup (-DropTaglinePct), removendo a linha
+#      "DOCINHOS ARTESANAIS" para o lettering "Moces" ficar grande e legível;
+#   3. Recorta com margem mínima (os enfeites rosas dos cantos ficam fora);
+#   4. Remove o fundo creme criando alfa por distância de cor (anti-aliasing suave);
+#   5. Gera DUAS versões transparentes em PNG:
 #        - logo-moces-header.png        → cores originais (header claro, após rolar)
 #        - logo-moces-header-light.png  → silhueta clara (sobre o vídeo escuro)
-#   5. Gera uma imagem de conferência visual (claro + escuro lado a lado).
+#   6. Gera uma prévia de conferência: as duas versões ampliadas (2x) e uma
+#      faixa no tamanho real do header para checar a legibilidade.
 #
 # Uso:
 #   powershell -File scripts\make-logo.ps1
-#   powershell -File scripts\make-logo.ps1 -MarginPct 0 -T0 12 -T1 45
+#   powershell -File scripts\make-logo.ps1 -DropTaglinePct 0   # mantém o lockup completo
+#   powershell -File scripts\make-logo.ps1 -DropTaglinePct 14 -MarginPct 0
 
 param(
   [string]$Source = "img\logo-moces.jpg",
   [string]$OutDark = "public\img\logo-moces-header.png",
   [string]$OutLight = "public\img\logo-moces-header-light.png",
   [string]$PreviewPath = "$env:TEMP\moces-logo-preview.jpg",
-  [int]$MarginPct = 1,      # margem (%) ao redor do lockup (evita os enfeites rosas dos cantos)
-  [int]$OutHeight = 180,    # altura final (3x um header de ~60px, para telas retina)
-  [int]$T0 = 15,            # distância do fundo até começar a ficar visível
-  [int]$T1 = 50,            # distância do fundo para ficar 100% opaco
-  [string]$LightHex = "F7EEE0"  # cor da variante clara (creme do site)
+  [int]$DropTaglinePct = 13, # corta esta % da base do lockup (remove "DOCINHOS ARTESANAIS"; 0 = mantém)
+  [int]$MarginPct = 1,       # margem (%) ao redor do lockup (evita os enfeites rosas dos cantos)
+  [int]$OutHeight = 186,     # altura final (3x um header de ~62px, para telas retina)
+  [int]$T0 = 15,             # distância do fundo até começar a ficar visível
+  [int]$T1 = 50,             # distância do fundo para ficar 100% opaco
+  [string]$LightHex = "F7EEE0",  # cor da variante clara (creme do site)
+  [int]$RealDarkH = 52,      # altura real da logo no header sólido (para a prévia)
+  [int]$RealLightH = 62      # altura real da logo sobre o vídeo (para a prévia)
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,7 +51,8 @@ using System.Runtime.InteropServices;
 public static class MocesLogo
 {
     public static string Build(string srcPath, string outDark, string outLight, string previewPath,
-                               int marginPct, int outHeight, int t0, int t1, string lightHex)
+                               int dropTaglinePct, int marginPct, int outHeight, int t0, int t1,
+                               string lightHex, int realDarkH, int realLightH)
     {
         Bitmap src = new Bitmap(srcPath);
         try
@@ -85,13 +95,20 @@ public static class MocesLogo
             }
             int bgR = (int)(sr / sn), bgG = (int)(sg / sn), bgB = (int)(sb / sn);
 
-            // ---------- 3. recorte com margem ----------
+            // ---------- 3. recorte (cortando a tagline da base, se pedido) ----------
+            int contentH = maxY - minY + 1;
+            int bottom = maxY;
+            if (dropTaglinePct > 0)
+            {
+                int cut = (int)Math.Round(contentH * dropTaglinePct / 100.0);
+                if (maxY - cut > minY + 20) bottom = maxY - cut;
+            }
             int mw = (int)Math.Round((maxX - minX) * marginPct / 100.0);
-            int mh = (int)Math.Round((maxY - minY) * marginPct / 100.0);
+            int mh = (int)Math.Round(contentH * marginPct / 100.0);
             int x0 = Math.Max(0, minX - mw);
             int y0 = Math.Max(0, minY - mh);
             int x1 = Math.Min(W - 1, maxX + mw);
-            int y1 = Math.Min(H - 1, maxY + mh);
+            int y1 = Math.Min(H - 1, bottom + mh);
             int cw = x1 - x0 + 1;
             int ch = y1 - y0 + 1;
 
@@ -137,12 +154,12 @@ public static class MocesLogo
             int fw = (int)Math.Round(cw * (double)fh / (double)ch);
             SavePng(cropDark, fw, fh, outDark);
             SavePng(cropLight, fw, fh, outLight);
-            SavePreview(cropDark, cropLight, previewPath, fw, fh);
+            SavePreview(cropDark, cropLight, previewPath, fw, fh, realDarkH, realLightH);
 
             cropDark.Dispose();
             cropLight.Dispose();
 
-            return "Conteudo " + (maxX - minX + 1) + "x" + (maxY - minY + 1) +
+            return "Conteudo original " + (maxX - minX + 1) + "x" + contentH +
                    " | fundo RGB(" + bgR + "," + bgG + "," + bgB + ")" +
                    " | recorte " + cw + "x" + ch +
                    " | saida " + fw + "x" + fh;
@@ -170,29 +187,52 @@ public static class MocesLogo
         }
     }
 
-    // Conferência visual: versão colorida sobre creme + versão clara sobre chocolate.
-    static void SavePreview(Bitmap dark, Bitmap light, string path, int w, int h)
+    // Conferência visual:
+    //   faixa 1 — logo colorida ampliada 2x sobre o creme do site;
+    //   faixa 2 — logo clara ampliada 2x sobre o chocolate do hero;
+    //   faixa 3 — as duas no tamanho real do header (esquerda/direita) para checar legibilidade.
+    static void SavePreview(Bitmap dark, Bitmap light, string path, int w, int h, int realDarkH, int realLightH)
     {
         int scale = 2;
         int pad = 36;
         int cellW = w * scale + pad * 2;
         int bgH = h * scale + pad * 2;
-        using (Bitmap canvas = new Bitmap(cellW, bgH * 2, PixelFormat.Format24bppRgb))
+        int realH = Math.Max(realDarkH, realLightH) + pad * 2;
+        Color cream = ColorTranslator.FromHtml("#F8F2E9");
+        Color choco = ColorTranslator.FromHtml("#2C1D13");
+
+        using (Bitmap canvas = new Bitmap(cellW, bgH * 2 + realH, PixelFormat.Format24bppRgb))
         {
             using (Graphics g = Graphics.FromImage(canvas))
             {
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                // metade de cima: fundo creme do header sólido
+
+                // faixa 1: colorida sobre creme
                 g.SetClip(new Rectangle(0, 0, cellW, bgH));
-                g.Clear(ColorTranslator.FromHtml("#F8F2E9"));
+                g.Clear(cream);
                 g.ResetClip();
-                // metade de baixo: fundo do hero (chocolate escuro)
+
+                // faixa 2: clara sobre chocolate
                 g.SetClip(new Rectangle(0, bgH, cellW, bgH));
-                g.Clear(ColorTranslator.FromHtml("#2C1D13"));
+                g.Clear(choco);
                 g.ResetClip();
-                // logos por cima
+
                 g.DrawImage(dark, new Rectangle(pad, pad, w * scale, h * scale));
                 g.DrawImage(light, new Rectangle(pad, bgH + pad, w * scale, h * scale));
+
+                // faixa 3: tamanho real do header (esquerda creme / direita chocolate)
+                int mid = cellW / 2;
+                g.SetClip(new Rectangle(0, bgH * 2, mid + 1, realH));
+                g.Clear(cream);
+                g.ResetClip();
+                g.SetClip(new Rectangle(mid, bgH * 2, cellW - mid, realH));
+                g.Clear(choco);
+                g.ResetClip();
+
+                int dw = (int)Math.Round(w * (double)realDarkH / h);
+                int lw = (int)Math.Round(w * (double)realLightH / h);
+                g.DrawImage(dark, new Rectangle(pad, bgH * 2 + pad, dw, realDarkH));
+                g.DrawImage(light, new Rectangle(mid + pad, bgH * 2 + pad, lw, realLightH));
             }
             string dir = Path.GetDirectoryName(Path.GetFullPath(path));
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
@@ -217,7 +257,7 @@ $result = [MocesLogo]::Build(
   (Resolve-FullPath $OutDark),
   (Resolve-FullPath $OutLight),
   (Resolve-FullPath $PreviewPath),
-  $MarginPct, $OutHeight, $T0, $T1, $LightHex
+  $DropTaglinePct, $MarginPct, $OutHeight, $T0, $T1, $LightHex, $RealDarkH, $RealLightH
 )
 
 Write-Output "Mascara/recorte : $result"

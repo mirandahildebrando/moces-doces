@@ -60,12 +60,12 @@
 .brandLogoWrap {
   position: relative;
   display: block;
-  height: 50px;
+  height: 72px;
   transition: height 0.4s var(--ease);
 }
 
 .solid .brandLogoWrap {
-  height: 44px;
+  height: 60px;
 }
 
 .brandLogo {
@@ -203,14 +203,27 @@
   }
 }
 
+@media (max-width: 640px) {
+  .brandLogoWrap {
+    height: 60px;
+  }
+
+  .solid .brandLogoWrap {
+    height: 52px;
+  }
+}
+
 @media (max-width: 480px) {
   .cta {
     display: none;
   }
 
-  .brandLogoWrap,
+  .brandLogoWrap {
+    height: 54px;
+  }
+
   .solid .brandLogoWrap {
-    height: 42px;
+    height: 48px;
   }
 }
 

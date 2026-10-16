@@ -105,11 +105,14 @@ npx vercel --prod # deploy de produção
   - `public/img/logo-moces-header.png` → cores originais, aparece quando o header fica sólido (creme);
   - `public/img/logo-moces-header-light.png` → silhueta clara, aparece sobre o vídeo escuro do hero
     (a troca entre as duas é um fade suave conforme a rolagem).
-  O script detecta o conteúdo, recorta com margem mínima (deixando os enfeites rosas dos cantos de fora)
-  e remove o fundo creme criando canal alfa com anti-aliasing suave. Para regenerar após trocar a logo
-  original: `powershell -File scripts\make-logo.ps1`. Ele aceita `-MarginPct`, `-T0`/`-T1` (limiares do
-  alfa), `-LightHex` (cor da versão clara) e `-OutHeight`, e salva uma prévia de conferência em
-  `%TEMP%\moces-logo-preview.jpg` (versão colorida sobre creme + clara sobre chocolate).
+  O script detecta o conteúdo, corta a base do lockup (a linha miúda "DOCINHOS ARTESANAIS" fica
+  ilegível em tamanho de navbar — o lettering "Moces" fica grande e nítido), recorta com margem mínima
+  (deixando os enfeites rosas dos cantos de fora) e remove o fundo creme criando canal alfa com
+  anti-aliasing suave. Para regenerar após trocar a logo original: `powershell -File scripts\make-logo.ps1`.
+  Ele aceita `-DropTaglinePct` (0 = mantém o lockup completo), `-MarginPct`, `-T0`/`-T1` (limiares do
+  alfa), `-LightHex` (cor da versão clara), `-OutHeight` e `-RealDarkH`/`-RealLightH`, e salva uma prévia
+  de conferência em `%TEMP%\moces-logo-preview.jpg` (as duas versões ampliadas + uma faixa no tamanho
+  real do header para checar a legibilidade).
 - Os vídeos foram renomeados para nomes amigáveis na web (ex.: `motion-cake-slice.mp4`).
 - O vídeo `From Klickpin.com- ... herb garden ... .mp4` foi **intencionalmente ignorado**:
   o conteúdo é sobre jardins, não sobre doces.

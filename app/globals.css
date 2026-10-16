@@ -37,8 +37,15 @@
 
   /* Layout */
   --container: 1180px;
-  --header-h: 76px;
+  --header-h: 96px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cabeçalho mais compacto no celular (a altura é usada pelo hero, âncoras e menu). */
+@media (max-width: 640px) {
+  :root {
+    --header-h: 80px;
+  }
 }
 
 /* ---------- Reset ---------- */
