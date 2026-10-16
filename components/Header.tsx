@@ -58,17 +58,29 @@ export default function Header() {
           onClick={() => setOpen(false)}
           aria-label={`${site.name} — voltar ao início`}
         >
-          {/* Logo oficial: recorte do lockup central gerado por scripts/crop-logo.ps1.
-              A imagem já contém "Moces" e "Docinhos Artesanais", por isso vem com
-              alt vazio — o nome acessível fica no aria-label do link. */}
-          <Image
-            src="/img/logo-moces-header.png"
-            alt=""
-            width={327}
-            height={180}
-            priority
-            className={styles.brandLogo}
-          />
+          {/* Logo oficial da marca em duas versões transparentes (geradas por
+              scripts/make-logo.ps1): a clara aparece sobre o vídeo do hero e a
+              colorida quando o header fica sólido — troca com fade, sem "placa". */}
+          <span className={styles.brandLogoWrap}>
+            <Image
+              src="/img/logo-moces-header.png"
+              alt=""
+              width={327}
+              height={180}
+              loading="eager"
+              fetchPriority="low"
+              className={`${styles.brandLogo} ${styles.brandLogoDark}`}
+            />
+            <Image
+              src="/img/logo-moces-header-light.png"
+              alt=""
+              width={327}
+              height={180}
+              preload
+              aria-hidden
+              className={`${styles.brandLogo} ${styles.brandLogoLight}`}
+            />
+          </span>
         </a>
 
         <nav className={styles.nav} aria-label="Navegação principal">

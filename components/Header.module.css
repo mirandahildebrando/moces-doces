@@ -50,29 +50,59 @@
   color: var(--ink);
 }
 
-/* ---------- Marca (logo oficial) ---------- */
+/* ---------- Marca (logo oficial, transparente) ---------- */
 .brand {
   display: inline-flex;
   align-items: center;
   min-width: 0;
 }
 
-.brandLogo {
+.brandLogoWrap {
+  position: relative;
   display: block;
-  width: auto;
   height: 50px;
-  border-radius: 12px;
-  /* Sombra emana da "placa" creme da logo — funciona sobre o vídeo escuro
-     e quase some no fundo creme do header sólido. */
-  box-shadow: 0 10px 26px -14px rgba(20, 12, 6, 0.7);
-  transition:
-    height 0.4s var(--ease),
-    box-shadow 0.4s var(--ease);
+  transition: height 0.4s var(--ease);
 }
 
-.solid .brandLogo {
+.solid .brandLogoWrap {
   height: 44px;
-  box-shadow: 0 5px 16px -12px rgba(43, 29, 19, 0.65);
+}
+
+.brandLogo {
+  display: block;
+  height: 100%;
+  width: auto;
+  transition: opacity 0.45s var(--ease);
+}
+
+/* Versão com as cores originais (header sólido, fundo claro) */
+.brandLogoDark {
+  opacity: 1;
+}
+
+/* Versão clara (sobre o vídeo escuro do hero) — a sombra suave garante a
+   leitura da logo mesmo nas partes claras do vídeo. */
+.brandLogoLight {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  filter: drop-shadow(0 2px 10px rgba(14, 8, 4, 0.55));
+}
+
+.transparent .brandLogoDark {
+  opacity: 0;
+}
+
+.transparent .brandLogoLight {
+  opacity: 1;
+}
+
+.solid .brandLogoDark {
+  opacity: 1;
+}
+
+.solid .brandLogoLight {
+  opacity: 0;
 }
 
 /* ---------- Navegação ---------- */
@@ -178,13 +208,14 @@
     display: none;
   }
 
-  .brandLogo,
-  .solid .brandLogo {
+  .brandLogoWrap,
+  .solid .brandLogoWrap {
     height: 42px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .brandLogoWrap,
   .brandLogo {
     transition: none;
   }

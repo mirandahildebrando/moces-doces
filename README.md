@@ -61,7 +61,7 @@ lib/
   useInView.ts          → hook compartilhado do Intersection Observer
 public/img/             → fotos, vídeos e a logo usados pelo site
 scripts/
-  crop-logo.ps1         → gera o recorte da logo usado no header (ver abaixo)
+  make-logo.ps1         → gera as duas versões transparentes da logo do header (ver abaixo)
 ```
 
 ## Como editar o conteúdo
@@ -100,10 +100,16 @@ npx vercel --prod # deploy de produção
 
 - A pasta original `img/` foi **mantida intacta como backup**; o site usa a cópia em `public/img/`.
   Se preferir ter uma única fonte de verdade, mova os arquivos para `public/img/` e apague `img/`.
-- **Logo da marca:** `public/img/logo-moces-header.png` é o recorte do lockup central da
-  `logo-moces.jpg`, gerado por `scripts/crop-logo.ps1` (detecta o conteúdo automaticamente,
-  recorta com margem e salva em alta resolução). Para regenerar após trocar a logo original:
-  `powershell -File scripts\crop-logo.ps1`. O script aceita `-Threshold`, `-MarginPct` e `-OutHeight`.
+- **Logo da marca:** o novo header não usa mais o emblema "M" — ele mostra a logo oficial
+  em duas versões **transparentes** (sem fundo), geradas por `scripts/make-logo.ps1`:
+  - `public/img/logo-moces-header.png` → cores originais, aparece quando o header fica sólido (creme);
+  - `public/img/logo-moces-header-light.png` → silhueta clara, aparece sobre o vídeo escuro do hero
+    (a troca entre as duas é um fade suave conforme a rolagem).
+  O script detecta o conteúdo, recorta com margem mínima (deixando os enfeites rosas dos cantos de fora)
+  e remove o fundo creme criando canal alfa com anti-aliasing suave. Para regenerar após trocar a logo
+  original: `powershell -File scripts\make-logo.ps1`. Ele aceita `-MarginPct`, `-T0`/`-T1` (limiares do
+  alfa), `-LightHex` (cor da versão clara) e `-OutHeight`, e salva uma prévia de conferência em
+  `%TEMP%\moces-logo-preview.jpg` (versão colorida sobre creme + clara sobre chocolate).
 - Os vídeos foram renomeados para nomes amigáveis na web (ex.: `motion-cake-slice.mp4`).
 - O vídeo `From Klickpin.com- ... herb garden ... .mp4` foi **intencionalmente ignorado**:
   o conteúdo é sobre jardins, não sobre doces.
