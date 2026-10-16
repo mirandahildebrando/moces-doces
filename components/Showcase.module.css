@@ -1,0 +1,114 @@
+.section {
+  background-color: var(--cream);
+}
+
+/* ---------- Filtros ---------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: clamp(26px, 3.5vw, 36px);
+}
+
+.chip {
+  padding: 0.56rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: 0.87rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition:
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.chip:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.chipActive {
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+
+/* ---------- Grade de produtos ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: clamp(18px, 2.6vw, 28px);
+  margin-top: clamp(28px, 3.6vw, 40px);
+}
+
+/* Entrada escalonada dos cards (classe .is-visible é adicionada via JS) */
+.grid [data-card] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+  transition-delay: var(--card-delay, 0ms);
+}
+
+.grid:global(.is-visible) [data-card] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Observação sobre valores ---------- */
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: clamp(30px, 4vw, 42px);
+  padding: 18px 22px;
+  border: 1px dashed rgba(43, 29, 19, 0.2);
+  border-radius: var(--radius-sm);
+  background-color: var(--cream-deep);
+  color: var(--ink-soft);
+  font-size: 0.93rem;
+}
+
+.note strong {
+  color: var(--ink);
+}
+
+.noteIcon {
+  flex: none;
+  margin-top: 3px;
+  color: var(--gold);
+}
+
+@media (max-width: 560px) {
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chip {
+    flex: none;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid [data-card] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .chip:hover {
+    transform: none;
+  }
+}

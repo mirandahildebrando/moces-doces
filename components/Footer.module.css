@@ -1,0 +1,81 @@
+.footer {
+  background-color: var(--choco);
+  color: rgba(255, 253, 248, 0.82);
+}
+
+/* ---------- Bloco principal ---------- */
+.top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: clamp(30px, 4vw, 52px);
+  padding-block: clamp(56px, 7vw, 84px) 42px;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  color: var(--surface);
+}
+
+.brandTag {
+  margin-top: 0.35rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.brandText {
+  margin-top: 1rem;
+  max-width: 38ch;
+  font-size: 0.95rem;
+}
+
+.colTitle {
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: 1.06rem;
+  color: var(--surface);
+}
+
+.list {
+  display: grid;
+  gap: 0.65rem;
+  list-style: none;
+  font-size: 0.95rem;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: color 0.3s var(--ease);
+}
+
+.link:hover {
+  color: var(--gold-soft);
+}
+
+.address {
+  max-width: 30ch;
+  color: rgba(255, 253, 248, 0.62);
+}
+
+/* ---------- Barra inferior ---------- */
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 24px;
+  padding-block: 22px;
+  border-top: 1px solid rgba(255, 253, 248, 0.14);
+  font-size: 0.82rem;
+  color: rgba(255, 253, 248, 0.6);
+}
+
+@media (max-width: 860px) {
+  .top {
+    grid-template-columns: 1fr;
+  }
+}

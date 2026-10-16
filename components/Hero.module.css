@@ -1,0 +1,157 @@
+.hero {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: var(--choco);
+  background-image: radial-gradient(120% 90% at 25% 10%, #4a3220 0%, var(--choco) 62%);
+}
+
+/* ---------- Vídeo de fundo ---------- */
+.videoWrap {
+  position: absolute;
+  inset: 0;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.4s var(--ease);
+  transform: scale(1.02);
+}
+
+.videoReady {
+  opacity: 1;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 17, 10, 0.66) 0%,
+    rgba(28, 17, 10, 0.3) 38%,
+    rgba(28, 17, 10, 0.74) 100%
+  );
+}
+
+.overlayGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    110% 75% at 18% 100%,
+    rgba(193, 151, 74, 0.24) 0%,
+    rgba(193, 151, 74, 0) 58%
+  );
+}
+
+/* ---------- Conteúdo ---------- */
+.inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-block: calc(var(--header-h) + 56px) 110px;
+  color: var(--surface);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+.title {
+  margin-top: 1.1rem;
+  max-width: 15ch;
+  font-size: clamp(2.5rem, 6.2vw, 4.5rem);
+  color: var(--surface);
+}
+
+.lead {
+  margin-top: 1.15rem;
+  max-width: 46ch;
+  font-size: clamp(1.04rem, 1.8vw, 1.24rem);
+  color: rgba(255, 253, 248, 0.85);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(1.7rem, 3.4vw, 2.3rem);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  margin-top: clamp(2.2rem, 5vw, 3.4rem);
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 253, 248, 0.18);
+  list-style: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 253, 248, 0.86);
+}
+
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--gold);
+}
+
+/* ---------- Indicador de rolagem ---------- */
+.scrollCue {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  transform: translateX(-50%);
+  color: rgba(255, 253, 248, 0.78);
+  transition: color 0.3s var(--ease);
+}
+
+.scrollCue:hover {
+  color: var(--surface);
+}
+
+.cueLabel {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.cueIcon {
+  animation: floatCue 2.4s var(--ease) infinite;
+}
+
+@media (max-width: 640px) {
+  .inner {
+    padding-block: calc(var(--header-h) + 40px) 96px;
+  }
+
+  .scrollCue {
+    display: none;
+  }
+}

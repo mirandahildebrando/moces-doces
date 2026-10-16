@@ -1,0 +1,43 @@
+.header {
+  display: grid;
+  gap: 14px;
+  max-width: 660px;
+}
+
+.title {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+}
+
+.lead {
+  font-size: clamp(1rem, 1.6vw, 1.08rem);
+}
+
+/* Tons */
+.dark .title {
+  color: var(--ink);
+}
+
+.dark .lead {
+  color: var(--ink-soft);
+}
+
+.light .title {
+  color: var(--surface);
+}
+
+.light .lead {
+  color: rgba(255, 253, 248, 0.78);
+}
+
+/* Alinhamento */
+.center {
+  margin-inline: auto;
+  text-align: center;
+  justify-items: center;
+}
+
+@media (max-width: 560px) {
+  .header {
+    gap: 12px;
+  }
+}
