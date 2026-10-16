@@ -24,15 +24,16 @@
   color: var(--surface);
 }
 
-.transparent .brandMark {
-  background-color: rgba(255, 253, 248, 0.14);
-  border-color: rgba(255, 253, 248, 0.35);
-  color: var(--surface);
-}
-
 .transparent .cta {
   background-color: var(--surface);
   color: var(--ink);
+}
+
+/* Precisa declarar fundo e cor juntos: o CSS do módulo carrega depois do globals
+   e, sem isto, o texto ficaria escuro sobre o fundo escuro do :hover do .btn--primary. */
+.transparent .cta:hover {
+  background-color: var(--choco);
+  color: var(--surface);
 }
 
 .transparent .navLink {
@@ -49,53 +50,29 @@
   color: var(--ink);
 }
 
-/* ---------- Marca ---------- */
+/* ---------- Marca (logo oficial) ---------- */
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
   min-width: 0;
 }
 
-.brandMark {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  flex: none;
-  border-radius: 50%;
-  border: 1px solid rgba(193, 151, 74, 0.5);
-  background-color: var(--choco);
-  color: var(--gold-soft);
-  font-family: var(--font-display);
-  font-size: 1.08rem;
-  line-height: 1;
+.brandLogo {
+  display: block;
+  width: auto;
+  height: 50px;
+  border-radius: 12px;
+  /* Sombra emana da "placa" creme da logo — funciona sobre o vídeo escuro
+     e quase some no fundo creme do header sólido. */
+  box-shadow: 0 10px 26px -14px rgba(20, 12, 6, 0.7);
   transition:
-    background-color 0.4s var(--ease),
-    border-color 0.4s var(--ease);
+    height 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
 }
 
-.brandText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  min-width: 0;
-}
-
-.brandName {
-  font-family: var(--font-display);
-  font-size: 1.22rem;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.brandTag {
-  font-size: 0.58rem;
-  font-weight: 600;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  opacity: 0.72;
-  white-space: nowrap;
+.solid .brandLogo {
+  height: 44px;
+  box-shadow: 0 5px 16px -12px rgba(43, 29, 19, 0.65);
 }
 
 /* ---------- Navegação ---------- */
@@ -199,5 +176,16 @@
 @media (max-width: 480px) {
   .cta {
     display: none;
+  }
+
+  .brandLogo,
+  .solid .brandLogo {
+    height: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandLogo {
+    transition: none;
   }
 }

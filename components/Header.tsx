@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import { site } from "@/lib/site";
@@ -32,7 +33,15 @@ export default function Header() {
       if (event.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+    // Trava o scroll do fundo enquanto o painel mobile está aberto.
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [open]);
 
   const headerClass = [
@@ -49,13 +58,17 @@ export default function Header() {
           onClick={() => setOpen(false)}
           aria-label={`${site.name} — voltar ao início`}
         >
-          <span className={styles.brandMark} aria-hidden="true">
-            M
-          </span>
-          <span className={styles.brandText}>
-            <span className={styles.brandName}>{site.name}</span>
-            <span className={styles.brandTag}>{site.tagline}</span>
-          </span>
+          {/* Logo oficial: recorte do lockup central gerado por scripts/crop-logo.ps1.
+              A imagem já contém "Moces" e "Docinhos Artesanais", por isso vem com
+              alt vazio — o nome acessível fica no aria-label do link. */}
+          <Image
+            src="/img/logo-moces-header.png"
+            alt=""
+            width={327}
+            height={180}
+            priority
+            className={styles.brandLogo}
+          />
         </a>
 
         <nav className={styles.nav} aria-label="Navegação principal">

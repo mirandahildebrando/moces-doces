@@ -13,12 +13,15 @@
   --ink-soft: #6f5b49;
   --gold: #c1974a;
   --gold-soft: #e8d7b2;
+  /* Dourado escurecido: única variante aprovada para TEXTO (AA ~5:1 sobre --cream/--surface). */
+  --gold-ink: #836324;
   --terra: #b85c34;
   --choco: #2c1d13;
   --choco-soft: #3d2a1b;
   --line: rgba(43, 29, 19, 0.12);
   --line-strong: rgba(43, 29, 19, 0.22);
-  --wa-green: #1d8a4d;
+  /* Verde WhatsApp escurecido: texto pequeno sobre --wa-green-bg atinge AA (~5,9:1). */
+  --wa-green: #166b3d;
   --wa-green-bg: #eaf6ef;
 
   /* Tipografia (variáveis definidas pelo next/font) */
@@ -132,7 +135,7 @@ ol {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--gold-ink);
 }
 
 .eyebrow::before {
@@ -214,7 +217,7 @@ ol {
 
 .btn--wa {
   background-color: var(--wa-green-bg);
-  border-color: rgba(29, 138, 77, 0.28);
+  border-color: rgba(22, 107, 61, 0.3);
   color: var(--wa-green);
 }
 

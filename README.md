@@ -39,6 +39,7 @@ app/
   layout.tsx            → fontes, metadata (SEO) e idioma pt-BR
   page.tsx              → monta as seções + dados estruturados (Schema.org Bakery)
   globals.css           → design tokens, reset, botões, .enhance-img, animações
+  not-found.tsx         → página 404 com a identidade da marca
   robots.ts / sitemap.ts
   opengraph-image.tsx   → imagem de compartilhamento gerada no build
   icon.svg              → favicon
@@ -57,7 +58,10 @@ lib/
   site.ts               → nome, telefone, Instagram, endereço, URL pública
   whatsapp.ts           → geração dos links wa.me com mensagem pré-preenchida
   products.ts           → catálogo da vitrine (edite aqui para add/remover doces)
-public/img/             → fotos e vídeos usados pelo site
+  useInView.ts          → hook compartilhado do Intersection Observer
+public/img/             → fotos, vídeos e a logo usados pelo site
+scripts/
+  crop-logo.ps1         → gera o recorte da logo usado no header (ver abaixo)
 ```
 
 ## Como editar o conteúdo
@@ -96,6 +100,10 @@ npx vercel --prod # deploy de produção
 
 - A pasta original `img/` foi **mantida intacta como backup**; o site usa a cópia em `public/img/`.
   Se preferir ter uma única fonte de verdade, mova os arquivos para `public/img/` e apague `img/`.
+- **Logo da marca:** `public/img/logo-moces-header.png` é o recorte do lockup central da
+  `logo-moces.jpg`, gerado por `scripts/crop-logo.ps1` (detecta o conteúdo automaticamente,
+  recorta com margem e salva em alta resolução). Para regenerar após trocar a logo original:
+  `powershell -File scripts\crop-logo.ps1`. O script aceita `-Threshold`, `-MarginPct` e `-OutHeight`.
 - Os vídeos foram renomeados para nomes amigáveis na web (ex.: `motion-cake-slice.mp4`).
 - O vídeo `From Klickpin.com- ... herb garden ... .mp4` foi **intencionalmente ignorado**:
   o conteúdo é sobre jardins, não sobre doces.

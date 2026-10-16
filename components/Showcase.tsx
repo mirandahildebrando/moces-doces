@@ -1,64 +1,33 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import styles from "./Showcase.module.css";
 import ProductCard from "./ProductCard";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 import { SparkleIcon } from "./icons";
 import { categories, products, type CategoryId } from "@/lib/products";
+import useInView from "@/lib/useInView";
 
 type FilterId = CategoryId | "todos";
 
 /**
  * Vitrine de produtos — SEM PREÇOS (regra de negócio).
  * Filtros por categoria + animação escalonada dos cards ao entrar na tela.
+ * O `key` de cada card inclui o filtro atual: trocar de categoria remonta a grade
+ * e repete a animação de entrada, enquanto a classe .is-visible da grade permanece.
  */
 export default function Showcase() {
   const [filter, setFilter] = useState<FilterId>("todos");
   const gridRef = useRef<HTMLDivElement>(null);
-  const revealedRef = useRef(false);
+  // threshold 0 de propósito: no celular a grade passa de 10.000px de altura e
+  // qualquer fração mínima (ex.: 5%) exigiria centenas de px de rolagem até revelar os cards.
+  const revealed = useInView(gridRef, { threshold: 0, rootMargin: "0px 0px -6% 0px" });
 
   const filtered = useMemo(
     () => (filter === "todos" ? products : products.filter((item) => item.category === filter)),
     [filter]
   );
-
-  // Revela os cards quando a vitrine entra na tela.
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      grid.classList.add("is-visible");
-      revealedRef.current = true;
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          grid.classList.add("is-visible");
-          revealedRef.current = true;
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -6% 0px", threshold: 0.05 }
-    );
-
-    observer.observe(grid);
-    return () => observer.disconnect();
-  }, []);
-
-  // Reanima os cards sempre que o filtro muda.
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid || !revealedRef.current) return;
-
-    grid.classList.remove("is-visible");
-    const frame = requestAnimationFrame(() => grid.classList.add("is-visible"));
-    return () => cancelAnimationFrame(frame);
-  }, [filter]);
 
   return (
     <section id="vitrine" className={`section ${styles.section}`}>
@@ -94,9 +63,12 @@ export default function Showcase() {
           {filtered.length} {filtered.length === 1 ? "doce exibido" : "doces exibidos"}
         </p>
 
-        <div ref={gridRef} className={styles.grid}>
+        <div
+          ref={gridRef}
+          className={[styles.grid, revealed ? "is-visible" : ""].filter(Boolean).join(" ")}
+        >
           {filtered.map((product, index) => (
-            <ProductCard key={product.slug} product={product} index={index} />
+            <ProductCard key={`${filter}-${product.slug}`} product={product} index={index} />
           ))}
         </div>
 

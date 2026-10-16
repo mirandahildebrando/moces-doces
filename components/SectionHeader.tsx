@@ -17,7 +17,7 @@ export default function SectionHeader({
   align = "left",
 }: SectionHeaderProps) {
   return (
-    <header className={`${styles.header} ${styles[tone]} ${styles[align]}`}>
+    <header className={`${styles.header} ${styles[tone]} ${align === "center" ? styles.center : ""}`}>
       <p className="eyebrow">{eyebrow}</p>
       <h2 className={styles.title}>{title}</h2>
       {lead ? <p className={styles.lead}>{lead}</p> : null}

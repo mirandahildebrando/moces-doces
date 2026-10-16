@@ -30,7 +30,10 @@
   transform: translateY(-1px);
 }
 
-.chipActive {
+/* .chip:hover tem especificidade maior que .chipActive: sem esta regra o texto do
+   filtro ativo fica escuro sobre o fundo escuro enquanto o mouse continua em cima. */
+.chipActive,
+.chipActive:hover {
   background-color: var(--ink);
   border-color: var(--ink);
   color: var(--cream);
@@ -44,19 +47,26 @@
   margin-top: clamp(28px, 3.6vw, 40px);
 }
 
-/* Entrada escalonada dos cards (classe .is-visible é adicionada via JS) */
+/* Entrada escalonada dos cards (classe .is-visible é adicionada quando a vitrine entra na tela).
+   A animação usa `translate` (e não `transform`) para não sobrescrever o lift do :hover do card. */
 .grid [data-card] {
   opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
-  transition-delay: var(--card-delay, 0ms);
 }
 
 .grid:global(.is-visible) [data-card] {
-  opacity: 1;
-  transform: none;
+  animation: cardIn 0.7s var(--ease) both;
+  animation-delay: var(--card-delay, 0ms);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 /* ---------- Observação sobre valores ---------- */
@@ -102,10 +112,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .grid [data-card] {
+  .grid [data-card],
+  .grid:global(.is-visible) [data-card] {
     opacity: 1;
-    transform: none;
-    transition: none;
+    translate: none;
+    animation: none;
   }
 
   .chip:hover {
