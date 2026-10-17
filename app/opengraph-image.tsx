@@ -1,9 +1,20 @@
 import { ImageResponse } from "next/og";
+import { join } from "node:path";
+import { readFile } from "node:fs/promises";
 import { site } from "@/lib/site";
 
 export const alt = "Moces Doces — Confeitaria Artesanal em Vila Matilde, SP";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+/* A mesma logo do topo do site (variante clara, usada sobre o vídeo do hero).
+   O Satori — motor do ImageResponse — não lê arquivos do disco, só imagem remota
+   ou data URI, então o PNG é lido no build e embutido em base64. */
+const logoData = await readFile(
+  join(process.cwd(), "public/img/logo-moces-header-light.png"),
+  "base64"
+);
+const logoSrc = `data:image/png;base64,${logoData}`;
 
 /* Mesmos tokens de `app/globals.css` — o card acompanha a identidade do site.
    A tipografia do card fica na fonte padrão do Satori: ele só aceita TTF/OTF
@@ -32,35 +43,36 @@ export default function OpengraphImage() {
           justifyContent: "center",
           backgroundColor: palette.choco,
           color: palette.cream,
-          padding: 72,
+          padding: 64,
           textAlign: "center",
         }}
       >
+        <img src={logoSrc} width={430} height={261} alt="" />
+
         <div
           style={{
             display: "flex",
-            fontSize: 26,
-            letterSpacing: 10,
-            textTransform: "uppercase",
-            color: palette.gold,
-            marginBottom: 26,
+            width: 170,
+            height: 2,
+            backgroundColor: palette.gold,
+            margin: "34px 0 38px",
           }}
-        >
-          Confeitaria Artesanal
-        </div>
+        />
 
-        <div style={{ display: "flex", fontSize: 92, fontWeight: 700, lineHeight: 1.05 }}>
-          {site.name}
-        </div>
-
-        <div style={{ display: "flex", width: 170, height: 2, backgroundColor: palette.gold, margin: "38px 0" }} />
-
-        <div style={{ display: "flex", fontSize: 36, color: palette.creamDeep }}>
+        <div style={{ display: "flex", fontSize: 38, color: palette.creamDeep }}>
           Docinhos a pronta entrega e encomendas exclusivas
         </div>
 
-        <div style={{ display: "flex", fontSize: 27, marginTop: 22, color: palette.gold }}>
-          Pedidos pelo WhatsApp · Vila Matilde, SP
+        <div
+          style={{
+            display: "flex",
+            fontSize: 27,
+            marginTop: 24,
+            letterSpacing: 1,
+            color: palette.gold,
+          }}
+        >
+          {site.name} · Pedidos pelo WhatsApp · Vila Matilde, SP
         </div>
       </div>
     ),
