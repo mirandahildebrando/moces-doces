@@ -21,3 +21,7 @@ next-env.d.ts
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Pasta de originais na raiz do projeto (não é servida pelo site: as fotos
+# usadas ficam em /public/img). Continua no disco, só fora do Git.
+/img/
