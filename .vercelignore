@@ -1,0 +1,5 @@
+# Originais locais (não usados pelo site - ficam em /public/img)
+/img/
+
+# Builds locais
+/.next-build/
