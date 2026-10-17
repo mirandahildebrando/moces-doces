@@ -60,21 +60,23 @@ export default function Header() {
         >
           {/* Logo oficial da marca em duas versões transparentes (geradas por
               scripts/make-logo.ps1): a clara aparece sobre o vídeo do hero e a
-              colorida quando o header fica sólido — troca com fade, sem "placa". */}
+              colorida quando o header fica sólido — troca com fade, sem "placa".
+              O ?v=3 renova o cache do navegador quando a arte da logo é regerada
+              (o /img é servido com cache longo). */}
           <span className={styles.brandLogoWrap}>
             <Image
-              src="/img/logo-moces-header.png"
+              src="/img/logo-moces-header.png?v=3"
               alt=""
-              width={387}
+              width={306}
               height={186}
               loading="eager"
               fetchPriority="low"
               className={`${styles.brandLogo} ${styles.brandLogoDark}`}
             />
             <Image
-              src="/img/logo-moces-header-light.png"
+              src="/img/logo-moces-header-light.png?v=3"
               alt=""
-              width={387}
+              width={306}
               height={186}
               preload
               aria-hidden

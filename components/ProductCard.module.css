@@ -1,38 +1,44 @@
 .card {
   display: flex;
   flex-direction: column;
+  /* Mesma altura para todos os cards da linha (grid com stretch). */
+  height: 100%;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid var(--gold-line);
   border-radius: var(--radius);
-  background-color: var(--surface);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
   transition:
-    transform 0.5s var(--ease),
-    box-shadow 0.5s var(--ease),
-    border-color 0.5s var(--ease);
+    transform 250ms ease-out,
+    box-shadow 250ms ease-out,
+    border-color 250ms ease-out;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  border-color: rgba(193, 151, 74, 0.45);
-  box-shadow: var(--shadow-md);
+  border-color: var(--gold);
+  box-shadow: var(--card-shadow-hover);
 }
 
 /* ---------- Foto ---------- */
 .media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  /* As fotos do catálogo são verticais (3:4); o quadrado mostra o doce inteiro,
+     enquanto um 4:3 cortaria quase metade da altura de cada produto. */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
+  /* Divisória fina entre a foto e o conteúdo. */
+  border-bottom: 1px solid var(--gold-line);
   background-color: var(--cream-deep);
 }
 
 .image {
   object-fit: cover;
-  transition: transform 0.9s var(--ease);
+  transition: transform 250ms ease-out;
 }
 
 .card:hover .image {
-  transform: scale(1.045);
+  transform: scale(1.05);
 }
 
 .badge {
@@ -41,10 +47,10 @@
   left: 14px;
   padding: 0.42rem 0.75rem;
   border-radius: 999px;
-  background-color: rgba(44, 29, 19, 0.82);
+  background-color: var(--on-dark-scrim);
   backdrop-filter: blur(6px);
-  color: var(--gold-soft);
-  font-size: 0.66rem;
+  color: var(--cream);
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -55,8 +61,8 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 20px 20px 22px;
+  gap: 0.6rem;
+  padding: 1.4rem;
 }
 
 .tag {
@@ -64,21 +70,22 @@
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--gold-ink);
+  color: var(--gold-ink-card);
 }
 
 .name {
-  font-size: 1.16rem;
+  font-size: 1.3rem;
+  color: var(--choco);
 }
 
 .desc {
-  flex: 1;
-  font-size: 0.92rem;
-  color: var(--ink-soft);
+  font-size: 0.95rem;
+  color: var(--choco-soft);
 }
 
 .cta {
-  margin-top: 0.75rem;
+  /* O botão fica sempre colado na base, independente do tamanho da descrição. */
+  margin-top: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {

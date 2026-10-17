@@ -6,7 +6,7 @@
   min-height: 100svh;
   overflow: hidden;
   background-color: var(--choco);
-  background-image: radial-gradient(120% 90% at 25% 10%, #4a3220 0%, var(--choco) 62%);
+  background-image: radial-gradient(120% 90% at 25% 10%, var(--choco-soft) 0%, var(--choco) 62%);
 }
 
 /* ---------- Vídeo de fundo ---------- */
@@ -28,59 +28,84 @@
   opacity: 1;
 }
 
+/* ---------- Véu de leitura ----------
+   Horizontal: escurece a esquerda (onde vive o texto) e deixa o prato com os morangos,
+   à direita, visível e vibrante. Vertical: um leve escurecimento no topo e na base,
+   que segura a logo do header e a faixa de destaques. */
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(28, 17, 10, 0.66) 0%,
-    rgba(28, 17, 10, 0.3) 38%,
-    rgba(28, 17, 10, 0.74) 100%
-  );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(30, 15, 8, 0.74) 0%,
+      rgba(30, 15, 8, 0.5) 45%,
+      rgba(30, 15, 8, 0.18) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(30, 15, 8, 0.5) 0%,
+      rgba(30, 15, 8, 0.07) 26%,
+      rgba(30, 15, 8, 0.16) 58%,
+      rgba(30, 15, 8, 0.66) 100%
+    );
 }
 
+/* Brilho quente da marca no canto inferior esquerdo: sutil para não lavar o texto. */
 .overlayGlow {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    110% 75% at 18% 100%,
-    rgba(193, 151, 74, 0.24) 0%,
-    rgba(193, 151, 74, 0) 58%
+    90% 55% at 14% 100%,
+    rgba(212, 169, 79, 0.14) 0%,
+    rgba(212, 169, 79, 0) 56%
   );
 }
 
-/* ---------- Conteúdo ---------- */
+/* ---------- Conteúdo ----------
+   Ancorado mais à esquerda que as demais seções (que usam .container centralizado):
+   o texto fica na área escura do véu e o vídeo — prato e morangos — ganha a cena. */
 .inner {
   position: relative;
   z-index: 2;
   width: 100%;
+  max-width: 1280px;
+  padding-inline: clamp(20px, 7vw, 104px) clamp(20px, 5vw, 40px);
   padding-block: calc(var(--header-h) + 56px) 110px;
-  color: var(--surface);
+  color: var(--on-dark);
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.76rem;
+  font-size: 0.8rem; /* ~12,8px */
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--gold-soft);
+  color: var(--on-dark);
+  text-shadow: var(--text-shadow-soft);
 }
 
 .title {
   margin-top: 1.1rem;
-  max-width: 15ch;
-  font-size: clamp(2.5rem, 6.2vw, 4.5rem);
-  color: var(--surface);
+  max-width: 16ch;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  color: var(--on-dark);
+  text-shadow: var(--text-shadow-title);
 }
 
+/* Subtítulo: o charme "manuscrito" agora vem do itálico da serifa dos títulos. */
 .lead {
-  margin-top: 1.15rem;
-  max-width: 46ch;
-  font-size: clamp(1.04rem, 1.8vw, 1.24rem);
-  color: rgba(255, 253, 248, 0.85);
+  margin-top: 1.2rem;
+  max-width: 40ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--on-dark);
+  text-shadow: var(--text-shadow-soft);
 }
 
 .ctas {
@@ -96,21 +121,25 @@
   gap: 10px 26px;
   margin-top: clamp(2.2rem, 5vw, 3.4rem);
   padding-top: 22px;
-  border-top: 1px solid rgba(255, 253, 248, 0.18);
+  border-top: 1px solid var(--on-dark-line);
   list-style: none;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-  color: rgba(255, 253, 248, 0.86);
+  gap: 10px;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  color: var(--on-dark);
+  text-shadow: var(--text-shadow-soft);
 }
 
 .badge::before {
   content: "";
+  flex: none;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -127,19 +156,20 @@
   justify-items: center;
   gap: 6px;
   transform: translateX(-50%);
-  color: rgba(255, 253, 248, 0.78);
+  color: var(--on-dark);
   transition: color 0.3s var(--ease);
 }
 
 .scrollCue:hover {
-  color: var(--surface);
+  color: var(--gold-hover);
 }
 
 .cueLabel {
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   font-weight: 600;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
+  text-shadow: var(--text-shadow-soft);
 }
 
 .cueIcon {
@@ -148,10 +178,25 @@
 
 @media (max-width: 640px) {
   .inner {
+    padding-inline: clamp(20px, 5vw, 40px);
     padding-block: calc(var(--header-h) + 40px) 96px;
   }
 
   .scrollCue {
     display: none;
+  }
+}
+
+/* ---------- Movimento reduzido ----------
+   O vídeo não é reproduzido: fica no primeiro quadro (poster), sem fade nem zoom. */
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .cueIcon {
+    animation: none;
   }
 }

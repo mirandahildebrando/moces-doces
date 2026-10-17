@@ -26,7 +26,7 @@ const steps = [
  */
 export default function HowToOrder() {
   return (
-    <section id="encomendas" className={`section ${styles.section}`}>
+    <section id="encomendas" className="section section--bg-alt">
       <div className={`container ${styles.layout}`}>
         <Reveal>
           <div>
@@ -56,8 +56,8 @@ export default function HowToOrder() {
           <aside className={styles.aside}>
             <div className={styles.arch}>
               <Image
-                src="/img/bolo.png"
-                alt="Fatia de bolo de chocolate trufado com morangos e castanhas"
+                src="/img/caixa-doces.jpg"
+                alt="Caixa vermelha da Moces com brigadeiros, brownies, morangos, uvas, marshmallows, cookies e potes de recheio"
                 fill
                 sizes="(max-width: 960px) 92vw, 430px"
                 className={`${styles.archImage} enhance-img`}

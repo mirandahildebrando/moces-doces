@@ -1,39 +1,78 @@
 /* ============================================================
    Moces Doces — Confeitaria Artesanal
    Tokens de design, reset e utilitários globais.
-   Paleta: creme/off-white, chocolate profundo, dourado e terracota.
+
+   FONTE ÚNICA DE CORES E FONTES DO SITE.
+   Paleta: creme (--cream), dourado (--gold), chocolate (--choco)
+   e frutas vermelhas (--berry).
+   Tipografia: no máximo DUAS famílias — Cormorant Garamond (títulos)
+   e Jost (texto, navegação, botões e subtítulos), carregadas em
+   `app/layout.tsx` via next/font.
    ============================================================ */
 
 :root {
-  /* Paleta */
-  --cream: #f8f2e9;
-  --cream-deep: #f1e7d8;
-  --surface: #fffdf8;
-  --ink: #2b1d13;
-  --ink-soft: #6f5b49;
-  --gold: #c1974a;
-  --gold-soft: #e8d7b2;
-  /* Dourado escurecido: única variante aprovada para TEXTO (AA ~5:1 sobre --cream/--surface). */
-  --gold-ink: #836324;
-  --terra: #b85c34;
-  --choco: #2c1d13;
-  --choco-soft: #3d2a1b;
-  --line: rgba(43, 29, 19, 0.12);
-  --line-strong: rgba(43, 29, 19, 0.22);
-  /* Verde WhatsApp escurecido: texto pequeno sobre --wa-green-bg atinge AA (~5,9:1). */
+  /* ---------- Paleta base ---------- */
+  --cream: #fff8ee; /* texto principal sobre vídeo e fundos escuros */
+  --gold: #d4a94f; /* acentos, botão primário e destaques */
+  --gold-hover: #e3bc6b; /* hover do botão primário */
+  --choco: #2a1810; /* texto sobre dourado e fundos claros */
+  --choco-soft: #4a2e22; /* variação mais clara do chocolate */
+  --berry: #b3263e; /* acento secundário (morangos) */
+
+  /* ---------- Derivados da paleta ---------- */
+  --cream-deep: #f6ecdc; /* fundos suaves sobre o creme */
+  --surface: #fffdf9; /* cartões e superfícies elevadas */
+  --ink: var(--choco); /* texto padrão em fundos claros */
+  --ink-soft: #6e5748; /* texto secundário (AA ~6,4:1 sobre --cream) */
+  --gold-soft: #f0dcb0; /* dourado claro: fundos suaves e seleção de texto */
+  /* Dourado escurecido: única variante aprovada para TEXTO dourado sobre fundos claros.
+     AA em todos os fundos do site (4,8:1 sobre --section-bg-alt, 5,5:1 sobre --section-bg). */
+  --gold-ink: #775618;
+  --line: rgba(42, 24, 16, 0.12);
+  --line-strong: rgba(42, 24, 16, 0.22);
+  --gold-line: rgba(212, 169, 79, 0.45); /* contorno dourado sutil (cards, divisorias, hover) */
+
+  /* ---------- Fundos das seções ---------- */
+  --section-bg: #f3e6d3; /* bege amendoado: fundo padrão das seções claras */
+  --section-bg-alt: #ead7be; /* alterna com --section-bg para dar ritmo entre seções */
+  /* Brilho quente no topo: dá profundidade ao fundo sem parecer manchado. */
+  --section-glow: radial-gradient(ellipse at top, rgba(255, 248, 238, 0.6), transparent 60%);
+
+  /* ---------- Cards ---------- */
+  --card-bg: #fffcf7; /* creme muito claro (contrasta com o bege da seção, nunca branco puro) */
+  --card-shadow: 0 1px 2px rgba(42, 24, 16, 0.06), 0 8px 24px rgba(42, 24, 16, 0.1);
+  --card-shadow-hover: 0 4px 8px rgba(42, 24, 16, 0.08), 0 18px 40px rgba(42, 24, 16, 0.18);
+  /* Categoria dentro do card: AA de 5,2:1 sobre --card-bg. */
+  --gold-ink-card: #8a6420;
+
+  --header-line: rgba(212, 169, 79, 0.35); /* borda inferior do header sólido */
+
+  /* Texto, linhas e véus sobre vídeos e fotos (derivados de --cream) */
+  --on-dark: var(--cream);
+  --on-dark-soft: rgba(255, 248, 238, 0.82);
+  --on-dark-muted: rgba(255, 248, 238, 0.62);
+  --on-dark-line: rgba(255, 248, 238, 0.18);
+  --on-dark-scrim: rgba(42, 24, 16, 0.92); /* selo sobre foto (badge dos cards) */
+
+  /* Sombras de texto: leitura garantida sobre vídeo e fotos */
+  --text-shadow-soft: 0 1px 12px rgba(0, 0, 0, 0.45);
+  --text-shadow-title: 0 2px 24px rgba(0, 0, 0, 0.35);
+
+  /* Verde WhatsApp: cor funcional (reconhecimento do app), fora da paleta decorativa.
+     Escurecido para o texto pequeno atingir AA (~5,9:1) sobre --wa-green-bg. */
   --wa-green: #166b3d;
   --wa-green-bg: #eaf6ef;
 
-  /* Tipografia (variáveis definidas pelo next/font) */
-  --font-display: var(--font-playfair), "Playfair Display", Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-inter), Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* ---------- Tipografia (variáveis definidas pelo next/font) ---------- */
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jost), Jost, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Formas e sombras */
   --radius-sm: 12px;
   --radius: 20px;
   --radius-lg: 32px;
-  --shadow-sm: 0 2px 12px rgba(43, 29, 19, 0.05);
-  --shadow-md: 0 20px 45px -24px rgba(43, 29, 19, 0.45);
+  --shadow-sm: 0 2px 12px rgba(42, 24, 16, 0.05);
+  --shadow-md: 0 20px 45px -24px rgba(42, 24, 16, 0.45);
 
   /* Layout */
   --container: 1180px;
@@ -92,6 +131,11 @@ h4 {
   text-wrap: balance;
 }
 
+/* Título de cena (hero): entrelinha mais justa para a serifa alta. */
+h1 {
+  line-height: 1.05;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -130,7 +174,20 @@ ol {
 }
 
 .section {
-  padding-block: clamp(72px, 9vw, 124px);
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+/* ---------- Fundos das seções claras ----------
+   Duas variantes, alternadas entre seções consecutivas para criar ritmo.
+   O brilho radial no topo dá profundidade sem parecer mancha. */
+.section--bg {
+  background-color: var(--section-bg);
+  background-image: var(--section-glow);
+}
+
+.section--bg-alt {
+  background-color: var(--section-bg-alt);
+  background-image: var(--section-glow);
 }
 
 /* ---------- Tipografia de apoio ---------- */
@@ -138,9 +195,9 @@ ol {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.76rem;
+  font-size: 0.8rem; /* ~12,8px */
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--gold-ink);
 }
@@ -167,49 +224,41 @@ ol {
   line-height: 1;
   letter-spacing: 0.01em;
   transition:
-    transform 0.35s var(--ease),
-    background-color 0.35s var(--ease),
-    color 0.35s var(--ease),
-    border-color 0.35s var(--ease),
-    box-shadow 0.35s var(--ease);
+    transform 0.2s var(--ease),
+    background-color 0.2s var(--ease),
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
 }
 
 .btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .btn:active {
   transform: translateY(0);
 }
 
+/* Botão primário: dourado da marca com texto chocolate (AA ~6,5:1). */
 .btn--primary {
-  background-color: var(--ink);
-  color: var(--cream);
+  background-color: var(--gold);
+  color: var(--choco);
   box-shadow: var(--shadow-md);
 }
 
 .btn--primary:hover {
-  background-color: var(--choco);
+  background-color: var(--gold-hover);
 }
 
-.btn--light {
-  background-color: var(--surface);
-  color: var(--ink);
-  box-shadow: var(--shadow-md);
+/* Botão secundário sobre vídeo/foto: contorno creme a 70% e preenchimento leve no hover. */
+.btn--outline-light {
+  border: 1.5px solid rgba(255, 248, 238, 0.7);
+  color: var(--cream);
 }
 
-.btn--light:hover {
-  background-color: #ffffff;
-}
-
-.btn--ghost-light {
-  border-color: rgba(255, 253, 248, 0.45);
-  color: var(--surface);
-}
-
-.btn--ghost-light:hover {
-  border-color: rgba(255, 253, 248, 0.85);
-  background-color: rgba(255, 253, 248, 0.12);
+.btn--outline-light:hover {
+  border-color: var(--cream);
+  background-color: rgba(255, 248, 238, 0.12);
 }
 
 .btn--outline {
@@ -219,7 +268,7 @@ ol {
 
 .btn--outline:hover {
   border-color: var(--ink);
-  background-color: rgba(43, 29, 19, 0.04);
+  background-color: rgba(42, 24, 16, 0.04);
 }
 
 .btn--wa {

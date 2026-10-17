@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import { site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+/* Títulos e subtítulos de cena: serifa elegante, pesos 500/600.
+   O itálico é usado apenas no subtítulo do hero. */
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
-const inter = Inter({
+/* Texto, navegação, botões e subtítulos: geométrica neutra e muito legível. */
+const jost = Jost({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600"],
+  variable: "--font-jost",
   display: "swap",
 });
 
@@ -55,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2c1d13",
+  themeColor: "#2a1810",
   colorScheme: "light",
 };
 
@@ -65,7 +71,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="pt-BR" className={`${cormorant.variable} ${jost.variable}`}>
       <body>{children}</body>
     </html>
   );

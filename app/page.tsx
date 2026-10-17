@@ -18,7 +18,7 @@ const jsonLd = {
     "Confeitaria artesanal com docinhos a pronta entrega e encomendas exclusivas. Pedidos pelo WhatsApp.",
   url: siteUrl,
   telephone: "+55 11 91595-7904",
-  image: `${siteUrl}/img/trufado.jpg`,
+  image: `${siteUrl}/img/trufas.jpg`,
   address: {
     "@type": "PostalAddress",
     streetAddress: "Vila Matilde",

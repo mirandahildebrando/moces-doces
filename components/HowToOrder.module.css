@@ -1,6 +1,5 @@
-.section {
-  background-color: var(--cream);
-}
+/* Fundo: vem do utilitário global .section--bg-alt (app/globals.css) — alterna
+   com a vitrine (.section--bg) para criar ritmo entre as seções claras. */
 
 .layout {
   display: grid;
@@ -30,20 +29,21 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  border: 1px solid rgba(193, 151, 74, 0.55);
-  background-color: var(--gold-soft);
+  border: 1px solid var(--gold-line);
+  background-color: var(--card-bg);
   color: var(--choco);
   font-family: var(--font-display);
-  font-size: 1.12rem;
+  font-size: 1.18rem;
+  font-weight: 600;
 }
 
 .stepTitle {
-  font-size: 1.16rem;
+  font-size: 1.3rem;
 }
 
 .stepText {
   margin-top: 0.32rem;
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   color: var(--ink-soft);
 }
 
@@ -55,10 +55,13 @@
 
 .arch {
   position: relative;
+  /* width explícito: sem ele, o `margin-inline: auto` do mobile faria o item
+     encolher ao conteúdo (a imagem `fill` é absoluta) e o arco colapsaria. */
+  width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: 260px 260px var(--radius-lg) var(--radius-lg);
-  border: 1px solid var(--line);
+  border: 1px solid var(--gold-line);
   box-shadow: var(--shadow-md);
   background-color: var(--cream-deep);
 }
@@ -69,18 +72,18 @@
 
 .highlight {
   padding: 24px 26px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--gold-line);
   border-left: 4px solid var(--gold);
   border-radius: var(--radius);
-  background-color: var(--surface);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
 }
 
 .highlightTitle {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.08rem;
+  font-size: 1.22rem;
 }
 
 .highlightIcon {
@@ -90,7 +93,7 @@
 
 .highlightText {
   margin-top: 0.55rem;
-  font-size: 0.94rem;
+  font-size: 0.96rem;
   color: var(--ink-soft);
 }
 

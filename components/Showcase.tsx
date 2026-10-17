@@ -30,7 +30,7 @@ export default function Showcase() {
   );
 
   return (
-    <section id="vitrine" className={`section ${styles.section}`}>
+    <section id="vitrine" className="section section--bg">
       <div className="container">
         <Reveal>
           <SectionHeader

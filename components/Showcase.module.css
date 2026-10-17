@@ -1,6 +1,4 @@
-.section {
-  background-color: var(--cream);
-}
+/* Fundo: vem do utilitário global .section--bg (app/globals.css). */
 
 /* ---------- Filtros ---------- */
 .filters {
@@ -10,22 +8,25 @@
   margin-top: clamp(26px, 3.5vw, 36px);
 }
 
+/* Mesma linguagem visual dos cards de produto (fundo creme, contorno dourado). */
 .chip {
   padding: 0.56rem 1.1rem;
   border-radius: 999px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--gold-line);
+  background-color: var(--card-bg);
+  box-shadow: var(--card-shadow);
   font-size: 0.87rem;
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--choco-soft);
   transition:
-    background-color 0.3s var(--ease),
-    border-color 0.3s var(--ease),
-    color 0.3s var(--ease),
-    transform 0.3s var(--ease);
+    background-color 0.25s ease-out,
+    border-color 0.25s ease-out,
+    color 0.25s ease-out,
+    transform 0.25s ease-out;
 }
 
 .chip:hover {
-  border-color: var(--ink);
+  border-color: var(--gold);
   color: var(--ink);
   transform: translateY(-1px);
 }
@@ -42,8 +43,10 @@
 /* ---------- Grade de produtos ---------- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: clamp(18px, 2.6vw, 28px);
+  /* Desktop: 4 colunas — tablet (≤1024px): 2 — celular (≤560px): 1. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(18px, 2.2vw, 26px);
   margin-top: clamp(28px, 3.6vw, 40px);
 }
 
@@ -76,21 +79,29 @@
   gap: 12px;
   margin-top: clamp(30px, 4vw, 42px);
   padding: 18px 22px;
-  border: 1px dashed rgba(43, 29, 19, 0.2);
+  border: 1px dashed var(--gold-line);
   border-radius: var(--radius-sm);
-  background-color: var(--cream-deep);
+  background-color: var(--card-bg);
   color: var(--ink-soft);
-  font-size: 0.93rem;
+  font-size: 0.94rem;
 }
 
 .note strong {
   color: var(--ink);
+  font-weight: 600;
 }
 
 .noteIcon {
   flex: none;
   margin-top: 3px;
   color: var(--gold);
+}
+
+/* Tablet: 2 colunas. */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 560px) {
@@ -108,6 +119,7 @@
 
   .grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 

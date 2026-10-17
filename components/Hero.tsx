@@ -14,6 +14,7 @@ const badges = [
 /**
  * Cena principal: vídeo em tela cheia (100vh) com overlay para leitura do texto.
  * O vídeo entra com um fade suave sobre um fundo chocolate quando está pronto para tocar.
+ * Para quem prefere menos movimento, o vídeo fica pausado no poster (primeiro quadro).
  */
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -23,7 +24,7 @@ export default function Hero() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Usuários que preferem menos movimento veem apenas o fundo elegante.
+    // Usuários que preferem menos movimento veem apenas o poster estático.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
       return;
@@ -41,6 +42,7 @@ export default function Hero() {
           ref={videoRef}
           className={`${styles.video} ${ready ? styles.videoReady : ""}`}
           src="/img/hero-moces.mp4"
+          poster="/img/hero-moces-poster.jpg"
           autoPlay
           muted
           loop
@@ -52,19 +54,19 @@ export default function Hero() {
         <div className={styles.overlayGlow} />
       </div>
 
-      <div className={`container ${styles.inner}`}>
+      <div className={styles.inner}>
         <p className={styles.eyebrow}>Confeitaria artesanal • Vila Matilde, SP</p>
 
-        <h1 className={styles.title}>Adoçando seus momentos com arte e sabor.</h1>
+        <h1 className={styles.title}>Adoçando seus momentos com a Moces Doces</h1>
 
         <p className={styles.lead}>Docinhos a pronta entrega e encomendas exclusivas.</p>
 
         <div className={styles.ctas}>
-          <a className="btn btn--light" href="#vitrine">
+          <a className="btn btn--primary" href="#vitrine">
             Ver Cardápio
           </a>
           <a
-            className="btn btn--ghost-light"
+            className="btn btn--outline-light"
             href={whatsappLink()}
             target="_blank"
             rel="noopener noreferrer"

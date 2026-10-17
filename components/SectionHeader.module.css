@@ -5,11 +5,22 @@
 }
 
 .title {
-  font-size: clamp(1.9rem, 4vw, 2.9rem);
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+}
+
+/* Detalhe dourado sob o título da seção (acompanha o alinhamento do header). */
+.title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 2px;
+  margin-top: 16px;
+  border-radius: 2px;
+  background-color: var(--gold);
 }
 
 .lead {
-  font-size: clamp(1rem, 1.6vw, 1.08rem);
+  font-size: clamp(1.02rem, 1.6vw, 1.1rem);
 }
 
 /* Tons */
@@ -22,11 +33,11 @@
 }
 
 .light .title {
-  color: var(--surface);
+  color: var(--on-dark);
 }
 
 .light .lead {
-  color: rgba(255, 253, 248, 0.78);
+  color: var(--on-dark-soft);
 }
 
 /* Alinhamento */
@@ -34,6 +45,10 @@
   margin-inline: auto;
   text-align: center;
   justify-items: center;
+}
+
+.center .title::after {
+  margin-inline: auto;
 }
 
 @media (max-width: 560px) {

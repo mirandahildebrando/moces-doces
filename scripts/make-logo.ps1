@@ -9,21 +9,24 @@
 #   1. Detecta automaticamente o lockup central (pixels escuros);
 #   2. Corta a base do lockup (-DropTaglinePct), removendo a linha
 #      "DOCINHOS ARTESANAIS" para o lettering "Moces" ficar grande e legível;
-#   3. Recorta com margem mínima (os enfeites rosas dos cantos ficam fora);
-#   4. Remove o fundo creme criando alfa por distância de cor (anti-aliasing suave);
-#   5. Gera DUAS versões transparentes em PNG:
+#   3. Acrescenta o lettering inferior "DOCES" (parâmetro -TaglineText),
+#      centralizado, em serifa com espaçamento, na mesma cor escura do
+#      lettering original (ou na cor clara na variante clara);
+#   4. Recorta com margem mínima (os enfeites rosas dos cantos ficam fora);
+#   5. Remove o fundo creme criando alfa por distância de cor (anti-aliasing suave);
+#   6. Gera DUAS versões transparentes em PNG:
 #        - logo-moces-header.png        → cores originais (header claro, após rolar)
 #        - logo-moces-header-light.png  → silhueta clara (sobre o vídeo escuro)
-#   6. Gera uma prévia de conferência: as duas versões ampliadas (2x) e uma
+#   7. Gera uma prévia de conferência: as duas versões ampliadas (2x) e uma
 #      faixa no tamanho real do header para checar a legibilidade.
 #
 # Uso:
 #   powershell -File scripts\make-logo.ps1
-#   powershell -File scripts\make-logo.ps1 -DropTaglinePct 0   # mantém o lockup completo
-#   powershell -File scripts\make-logo.ps1 -DropTaglinePct 14 -MarginPct 0
+#   powershell -File scripts\make-logo.ps1 -TaglineText ""     # sem o lettering inferior
+#   powershell -File scripts\make-logo.ps1 -DropTaglinePct 0  # mantém o lockup completo original
 
 param(
-  [string]$Source = "img\logo-moces.jpg",
+  [string]$Source = "public\img\logo-moces.jpg",
   [string]$OutDark = "public\img\logo-moces-header.png",
   [string]$OutLight = "public\img\logo-moces-header-light.png",
   [string]$PreviewPath = "$env:TEMP\moces-logo-preview.jpg",
@@ -33,8 +36,15 @@ param(
   [int]$T0 = 15,             # distância do fundo até começar a ficar visível
   [int]$T1 = 50,             # distância do fundo para ficar 100% opaco
   [string]$LightHex = "F7EEE0",  # cor da variante clara (creme do site)
-  [int]$RealDarkH = 52,      # altura real da logo no header sólido (para a prévia)
-  [int]$RealLightH = 62      # altura real da logo sobre o vídeo (para a prévia)
+  [int]$RealDarkH = 68,      # altura real da logo no header sólido (para a prévia)
+  [int]$RealLightH = 82,     # altura real da logo sobre o vídeo (para a prévia)
+
+  # --- Lettering inferior ("DOCES") ---
+  [string]$TaglineText = "DOCES", # texto abaixo do "Moces" (vazio = nenhum)
+  [int]$TaglineGapPct = 7,        # espaço entre o lockup e o texto (% da altura recortada)
+  [int]$TaglineCapsPct = 12,      # altura alvo das capitulares do texto (% da altura recortada)
+  [int]$TaglineWidthPct = 88,     # largura máxima do texto (% da largura recortada)
+  [double]$TaglineTrackingEm = 0.30 # espaçamento entre letras (fração do tamanho da fonte)
 )
 
 $ErrorActionPreference = "Stop"
@@ -52,7 +62,9 @@ public static class MocesLogo
 {
     public static string Build(string srcPath, string outDark, string outLight, string previewPath,
                                int dropTaglinePct, int marginPct, int outHeight, int t0, int t1,
-                               string lightHex, int realDarkH, int realLightH)
+                               string lightHex, int realDarkH, int realLightH,
+                               string taglineText, int taglineGapPct, int taglineCapsPct,
+                               int taglineWidthPct, double taglineTrackingEm)
     {
         Bitmap src = new Bitmap(srcPath);
         try
@@ -60,8 +72,9 @@ public static class MocesLogo
             int W = src.Width;
             int H = src.Height;
 
-            // ---------- 1. bounding box do conteúdo (pixels escuros) ----------
+            // ---------- 1. bounding box do conteúdo (pixels escuros) + cor do lettering ----------
             int minX = W, maxX = -1, minY = H, maxY = -1;
+            long dr = 0, dg = 0, db = 0; int dn = 0;
             for (int y = 0; y < H; y += 2)
             {
                 for (int x = 0; x < W; x += 2)
@@ -75,9 +88,16 @@ public static class MocesLogo
                         if (y < minY) minY = y;
                         if (y > maxY) maxY = y;
                     }
+                    if (lum < 110.0)
+                    {
+                        dr += c.R; dg += c.G; db += c.B; dn++;
+                    }
                 }
             }
             if (maxX < 0) throw new Exception("Nenhum conteudo encontrado com o limite de luminancia.");
+            Color dark = dn > 0
+                ? Color.FromArgb((int)(dr / dn), (int)(dg / dn), (int)(db / dn))
+                : Color.FromArgb(92, 74, 61);
 
             // ---------- 2. cor de fundo (média de um patch limpo abaixo do lockup) ----------
             int sx = W / 2;
@@ -149,25 +169,118 @@ public static class MocesLogo
                 cropLight.UnlockBits(lData);
             }
 
+            // ---------- 4b. faixa inferior com o lettering "DOCES" ----------
+            Bitmap finalDark = cropDark;
+            Bitmap finalLight = cropLight;
+            int finalH = ch;
+            string tag = (taglineText ?? "").Trim().ToUpperInvariant();
+            if (tag.Length > 0)
+            {
+                int gap = (int)Math.Round(ch * taglineGapPct / 100.0);
+                // Tamanho da fonte a partir da altura alvo das capitulares (~0.70em na Geórgia).
+                double em = ch * (taglineCapsPct / 100.0) / 0.70;
+                int bandH = (int)Math.Round(em * 1.14);
+                finalH = ch + gap + bandH;
+
+                finalDark = new Bitmap(cw, finalH, PixelFormat.Format32bppArgb);
+                finalLight = new Bitmap(cw, finalH, PixelFormat.Format32bppArgb);
+                using (Graphics g = Graphics.FromImage(finalDark))
+                {
+                    g.DrawImage(cropDark, new Rectangle(0, 0, cw, ch));
+                    DrawTrackedText(g, tag, cw, ch + gap, bandH, taglineWidthPct, taglineTrackingEm, dark);
+                }
+                using (Graphics g = Graphics.FromImage(finalLight))
+                {
+                    g.DrawImage(cropLight, new Rectangle(0, 0, cw, ch));
+                    DrawTrackedText(g, tag, cw, ch + gap, bandH, taglineWidthPct, taglineTrackingEm, light);
+                }
+            }
+
             // ---------- 5. redimensiona em alta qualidade e salva ----------
             int fh = outHeight;
-            int fw = (int)Math.Round(cw * (double)fh / (double)ch);
-            SavePng(cropDark, fw, fh, outDark);
-            SavePng(cropLight, fw, fh, outLight);
-            SavePreview(cropDark, cropLight, previewPath, fw, fh, realDarkH, realLightH);
+            int fw = (int)Math.Round(cw * (double)fh / (double)finalH);
+            SavePng(finalDark, fw, fh, outDark);
+            SavePng(finalLight, fw, fh, outLight);
+            SavePreview(finalDark, finalLight, previewPath, fw, fh, realDarkH, realLightH);
 
+            if (!ReferenceEquals(finalDark, cropDark))
+            {
+                finalDark.Dispose();
+                finalLight.Dispose();
+            }
             cropDark.Dispose();
             cropLight.Dispose();
 
             return "Conteudo original " + (maxX - minX + 1) + "x" + contentH +
                    " | fundo RGB(" + bgR + "," + bgG + "," + bgB + ")" +
-                   " | recorte " + cw + "x" + ch +
+                   " | lettering RGB(" + dark.R + "," + dark.G + "," + dark.B + ")" +
+                   " | recorte " + cw + "x" + finalH +
                    " | saida " + fw + "x" + fh;
         }
         finally
         {
             src.Dispose();
         }
+    }
+
+    // Desenha o lettering com espaçamento entre letras (a GDI+ não tem tracking nativo).
+    static void DrawTrackedText(Graphics g, string text, int width, int yTop, int bandH,
+                                int widthPct, double trackingEm, Color color)
+    {
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+        using (StringFormat sf = new StringFormat(StringFormat.GenericTypographic))
+        {
+            sf.FormatFlags |= StringFormatFlags.NoWrap | StringFormatFlags.FitBlackBox;
+            using (FontFamily fam = new FontFamily("Georgia"))
+            {
+                float em = bandH / 1.14f; // tamanho da fonte (px) definido pela altura da faixa
+                float track = (float)(em * trackingEm);
+                float total;
+                using (Font font = new Font(fam, em, FontStyle.Regular, GraphicsUnit.Pixel))
+                {
+                    total = MeasureTracked(g, text, font, sf, track);
+                }
+
+                // Se o texto passar da largura máxima permitida, reduz a fonte e remede.
+                float maxW = width * widthPct / 100f;
+                if (total > maxW && total > 0f)
+                {
+                    em *= maxW / total;
+                    track = (float)(em * trackingEm);
+                    using (Font font = new Font(fam, em, FontStyle.Regular, GraphicsUnit.Pixel))
+                    {
+                        total = MeasureTracked(g, text, font, sf, track);
+                    }
+                }
+
+                using (Font font = new Font(fam, em, FontStyle.Regular, GraphicsUnit.Pixel))
+                using (SolidBrush brush = new SolidBrush(color))
+                {
+                    float caps = em * 0.70f;
+                    float x = (width - total) / 2f;
+                    // O topo visual das capitulares fica ~0.23em abaixo do topo do box de linha (Geórgia).
+                    float y = yTop + Math.Max(0f, (bandH - caps) / 2f) - em * 0.23f;
+                    foreach (char c in text)
+                    {
+                        string s = c.ToString();
+                        g.DrawString(s, font, brush, x, y, sf);
+                        x += g.MeasureString(s, font, PointF.Empty, sf).Width + track;
+                    }
+                }
+            }
+        }
+    }
+
+    static float MeasureTracked(Graphics g, string text, Font font, StringFormat sf, float track)
+    {
+        float w = 0f;
+        foreach (char c in text)
+        {
+            w += g.MeasureString(c.ToString(), font, PointF.Empty, sf).Width + track;
+        }
+        return w - (text.Length > 0 ? track : 0f);
     }
 
     static void SavePng(Bitmap bmp, int w, int h, string path)
@@ -257,7 +370,8 @@ $result = [MocesLogo]::Build(
   (Resolve-FullPath $OutDark),
   (Resolve-FullPath $OutLight),
   (Resolve-FullPath $PreviewPath),
-  $DropTaglinePct, $MarginPct, $OutHeight, $T0, $T1, $LightHex, $RealDarkH, $RealLightH
+  $DropTaglinePct, $MarginPct, $OutHeight, $T0, $T1, $LightHex, $RealDarkH, $RealLightH,
+  $TaglineText, $TaglineGapPct, $TaglineCapsPct, $TaglineWidthPct, $TaglineTrackingEm
 )
 
 Write-Output "Mascara/recorte : $result"

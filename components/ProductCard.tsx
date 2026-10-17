@@ -38,7 +38,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         <p className={styles.desc}>{product.description}</p>
 
         <a
-          className={`btn btn--wa btn--sm btn--block ${styles.cta}`}
+          className={`btn btn--primary btn--sm btn--block ${styles.cta}`}
           href={productWhatsAppLink(product.name)}
           target="_blank"
           rel="noopener noreferrer"
