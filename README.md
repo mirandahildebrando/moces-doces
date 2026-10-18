@@ -1,8 +1,26 @@
 # Moces Doces — Landing Page
 
+[![No ar](https://img.shields.io/badge/ver%20em%20produ%C3%A7%C3%A3o-mocesdoces.vercel.app-2a1810?style=flat-square&logo=vercel&logoColor=white)](https://mocesdoces.vercel.app)
+
 Vitrine sofisticada para a confeitaria artesanal **Moces Doces** (Vila Matilde, SP).
 O site **não tem banco de dados, carrinho de compras nem preços**: ele apresenta os doces
 e direciona 100% dos pedidos para o **WhatsApp**.
+
+![Tela inicial do site](docs/hero.jpg)
+
+## Preview
+
+**Vitrine com filtros por categoria** — cada card abre o WhatsApp já com o nome do doce na mensagem.
+
+![Vitrine de doces](docs/vitrine.jpg)
+
+**Galeria em vídeo** — os clipes só reproduzem quando entram na tela.
+
+![Galeria de vídeos](docs/galeria.jpg)
+
+**Como pedir** — os três passos do atendimento.
+
+![Seção como pedir](docs/como-pedir.jpg)
 
 ## Stack
 
