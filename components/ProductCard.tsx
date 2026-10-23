@@ -1,8 +1,9 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import styles from "./ProductCard.module.css";
-import { WhatsAppIcon } from "./icons";
+import { IFoodIcon, WhatsAppIcon } from "./icons";
 import { categoryLabels, type Product } from "@/lib/products";
+import { site } from "@/lib/site";
 import { productWhatsAppLink } from "@/lib/whatsapp";
 
 interface ProductCardProps {
@@ -45,6 +46,15 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         >
           <WhatsAppIcon size={16} />
           Pedir pelo WhatsApp
+        </a>
+        <a
+          className="btn btn--primary btn--sm btn--block"
+          href={site.iFoodUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <IFoodIcon size={16} />
+          Pedir no iFood
         </a>
       </div>
     </article>

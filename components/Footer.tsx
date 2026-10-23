@@ -1,7 +1,7 @@
 import styles from "./Footer.module.css";
 import { site } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
-import { InstagramIcon, WhatsAppIcon } from "./icons";
+import { IFoodIcon, InstagramIcon, WhatsAppIcon } from "./icons";
 
 const navLinks = [
   { href: "#inicio", label: "Início" },
@@ -61,6 +61,17 @@ export default function Footer() {
               >
                 <WhatsAppIcon size={16} />
                 {site.phoneDisplay}
+              </a>
+            </li>
+            <li>
+              <a
+                className={styles.link}
+                href={site.iFoodUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <IFoodIcon size={16} />
+                iFood · Pedir agora
               </a>
             </li>
             <li className={styles.address}>

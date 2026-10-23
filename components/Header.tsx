@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 import { site } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
-import { CloseIcon, MenuIcon, WhatsAppIcon } from "./icons";
+import { CloseIcon, IFoodIcon, MenuIcon, WhatsAppIcon } from "./icons";
 
 const navItems = [
   { href: "#inicio", label: "Início" },
@@ -95,6 +95,15 @@ export default function Header() {
 
         <div className={styles.actions}>
           <a
+            className="btn btn--primary btn--sm"
+            href={site.iFoodUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IFoodIcon size={16} />
+            iFood
+          </a>
+          <a
             className={`btn btn--primary btn--sm ${styles.cta}`}
             href={whatsappLink()}
             target="_blank"
@@ -147,6 +156,15 @@ export default function Header() {
           >
             <WhatsAppIcon size={16} />
             Fazer Pedido pelo WhatsApp
+          </a>
+          <a
+            className="btn btn--primary btn--block"
+            href={site.iFoodUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IFoodIcon size={16} />
+            Pedir no iFood
           </a>
         </div>
       ) : null}

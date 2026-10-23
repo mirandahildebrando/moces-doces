@@ -77,7 +77,8 @@ export default function Showcase() {
             <SparkleIcon size={18} className={styles.noteIcon} />
             <span>
               <strong>Sem valores no site.</strong> A disponibilidade do dia e os valores são
-              informados pelo WhatsApp, para cuidarmos de cada pedido pessoalmente.
+              informados pelo WhatsApp ou pelo iFood, para cuidarmos de cada pedido
+              pessoalmente.
             </span>
           </p>
         </Reveal>

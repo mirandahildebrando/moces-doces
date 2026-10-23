@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./Hero.module.css";
+import { site } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
-import { ArrowDownIcon, WhatsAppIcon } from "./icons";
+import { ArrowDownIcon, IFoodIcon, WhatsAppIcon } from "./icons";
 
 const badges = [
   "Docinhos a pronta entrega",
@@ -73,6 +74,15 @@ export default function Hero() {
           >
             <WhatsAppIcon size={17} />
             Fazer Pedido
+          </a>
+          <a
+            className="btn btn--outline-light"
+            href={site.iFoodUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <IFoodIcon size={17} />
+            Pedir no iFood
           </a>
         </div>
 

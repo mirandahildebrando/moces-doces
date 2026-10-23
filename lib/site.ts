@@ -3,8 +3,8 @@
  *
  * Regras de negócio da cliente:
  * - O site é uma vitrine: NÃO exibe preços e NÃO tem carrinho.
- * - Todo pedido é fechado exclusivamente pelo WhatsApp.
- * - Não há aplicativos de delivery no momento.
+ * - Pedidos pelo WhatsApp e pelo iFood (app de delivery). WhatsApp = canal principal;
+ *   iFood = canal adicional de descoberta e venda (impulsionamento e marcação).
  * - Retirada em Vila Matilde (SP), entrega local combinada na conversa.
  */
 
@@ -17,6 +17,8 @@ export const site = {
   whatsappNumber: "5511915957904",
   instagramHandle: "@mocesdoces",
   instagramUrl: "https://www.instagram.com/mocesdoces",
+  /** Loja no iFood (delivery): destino dos botões de pedido via app. */
+  iFoodUrl: "https://www.ifood.com.br/delivery/sao-paulo-sp/moces-doces-vila-beatriz/b1df23cf-5957-46c6-a7b9-7509f3cc3913",
   pickupLocation: "Vila Matilde, SP",
 } as const;
 

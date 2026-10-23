@@ -2,17 +2,18 @@ import Image from "next/image";
 import styles from "./HowToOrder.module.css";
 import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
-import { SparkleIcon, WhatsAppIcon } from "./icons";
+import { IFoodIcon, SparkleIcon, WhatsAppIcon } from "./icons";
+import { site } from "@/lib/site";
 import { whatsappLink } from "@/lib/whatsapp";
 
 const steps = [
   {
     title: "Escolha seus doces na vitrine",
-    text: "Navegue pelas fotos, escolha seus favoritos e toque em “Pedir pelo WhatsApp”.",
+    text: "Navegue pelas fotos, escolha seus favoritos e toque em “Pedir pelo WhatsApp” ou “Pedir no iFood”.",
   },
   {
-    title: "Chame no WhatsApp",
-    text: "Enviamos os valores, a disponibilidade do dia e ajudamos a montar o pedido ideal.",
+    title: "Chame no WhatsApp ou no iFood",
+    text: "Enviamos os valores e a disponibilidade do dia pelo WhatsApp, ou você pede direto no app do iFood.",
   },
   {
     title: "Combine a retirada ou entrega",
@@ -21,8 +22,8 @@ const steps = [
 ];
 
 /**
- * Seção de encomendas: como pedir em 3 passos + destaque de atendimento
- * exclusivo pelo WhatsApp (não estamos em aplicativos de delivery).
+ * Seção de encomendas: como pedir em 3 passos + destaque dos canais de
+ * atendimento (WhatsApp e iFood).
  */
 export default function HowToOrder() {
   return (
@@ -33,7 +34,7 @@ export default function HowToOrder() {
             <SectionHeader
               eyebrow="Encomendas"
               title="Como pedir é simples"
-              lead="Sem aplicativos, sem carrinho e sem complicação: você fala diretamente com quem faz os seus doces."
+              lead="Sem carrinho e sem complicação: você pede pelo WhatsApp ou pelo iFood e fala diretamente com quem faz os seus doces."
             />
 
             <ol className={styles.steps}>
@@ -67,21 +68,32 @@ export default function HowToOrder() {
             <div className={styles.highlight}>
               <h3 className={styles.highlightTitle}>
                 <SparkleIcon size={18} className={styles.highlightIcon} />
-                Atendimento exclusivo pelo WhatsApp
+                WhatsApp e iFood
               </h3>
               <p className={styles.highlightText}>
-                Não estamos em aplicativos de delivery no momento. Cada pedido é atendido
+                Você pode pedir direto pelo WhatsApp ou pelo iFood. Cada pedido é atendido
                 pessoalmente, do primeiro “oi” até a combinação da retirada ou entrega.
               </p>
-              <a
-                className="btn btn--primary"
-                href={whatsappLink()}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <WhatsAppIcon size={17} />
-                Falar no WhatsApp
-              </a>
+              <div className={styles.highlightActions}>
+                <a
+                  className="btn btn--primary"
+                  href={whatsappLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <WhatsAppIcon size={17} />
+                  Falar no WhatsApp
+                </a>
+                <a
+                  className="btn btn--primary"
+                  href={site.iFoodUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <IFoodIcon size={17} />
+                  Pedir no iFood
+                </a>
+              </div>
             </div>
           </aside>
         </Reveal>
